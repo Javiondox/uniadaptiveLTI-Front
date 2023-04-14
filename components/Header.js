@@ -31,6 +31,8 @@ import {
 	VersionInfoContext,
 	PlatformContext,
 	BlocksDataContext,
+	MSGContext,
+	SettingsContext,
 } from "@components/pages/_app";
 import { toast } from "react-toastify";
 
@@ -65,6 +67,7 @@ function Header({ closeBtn }, ref) {
 		useContext(ItineraryInfoContext);
 	const { selectedEditVersion, setSelectedEditVersion } =
 		useContext(VersionInfoContext);
+	const { msg, setMSG } = useContext(MSGContext);
 
 	const { versionJson, setVersionJson } = useContext(VersionJsonContext);
 
@@ -72,6 +75,10 @@ function Header({ closeBtn }, ref) {
 
 	const { currentBlocksData, setCurrentBlocksData } =
 		useContext(BlocksDataContext);
+	const { settings, setSettings } = useContext(SettingsContext);
+
+	const parsedSettings = JSON.parse(settings);
+	let { reducedAnimations } = parsedSettings;
 
 	const selectItineraryDOM = useRef(null);
 	const selectVersionDOM = useRef(null);
@@ -83,13 +90,236 @@ function Header({ closeBtn }, ref) {
 		emptyMap,
 		{
 			id: 1,
-			name: "Matemáticas 4ºESO",
+			name: "Matemáticas 4ºESO-A",
 			versions: [
 				{
 					id: 0,
 					name: "Última versión",
 					lastUpdate: "20/05/2023",
 					default: "true",
+					blocksData: [
+						{
+							id: 0,
+							x: 1,
+							y: 1,
+							type: "file",
+							title: "Ecuaciones",
+							children: [1],
+							identation: 1,
+						},
+						{
+							id: 1,
+							x: 2,
+							y: 1,
+							type: "questionnaire",
+							title: "Examen Tema 1",
+							conditions: [
+								{
+									type: "qualification",
+									operand: ">",
+									objective: 8,
+									unlocks: 2,
+								},
+							],
+							children: [2, 4],
+							identation: 2,
+						},
+						{
+							id: 2,
+							x: 3,
+							y: 0,
+							type: "folder",
+							title: "Ecuaciones",
+							children: [3],
+							identation: 2,
+						},
+						{
+							id: 3,
+							x: 4,
+							y: 0,
+							type: "badge",
+							title: "Insignia Ecuaciones",
+							identation: 2,
+						},
+						{
+							id: 4,
+							x: 3,
+							y: 3,
+							type: "url",
+							title: "Web raices cuadradas",
+							children: [5],
+							identation: 1,
+						},
+						{
+							id: 5,
+							x: 4,
+							y: 3,
+							type: "forum",
+							title: "Foro de discusión",
+							children: [6],
+							identation: 2,
+						},
+						{
+							id: 6,
+							x: 5,
+							y: 3,
+							type: "questionnaire",
+							title: "Cuestionario de raices",
+							children: [7, 8],
+							identation: 1,
+						},
+						{
+							id: 7,
+							x: 6,
+							y: 2,
+							type: "assignment",
+							title: "Ejercicio de raices",
+							identation: 1,
+						},
+						{
+							id: 8,
+							x: 6,
+							y: 4,
+							type: "inquery",
+							title: "Preguntas sobre raices",
+							children: [9],
+							identation: 1,
+						},
+						{
+							id: 9,
+							x: 7,
+							y: 4,
+							type: "page",
+							title: "Web informativa",
+							children: [-1],
+							identation: 2,
+						},
+					],
+				},
+				{
+					id: 1,
+					name: "Prueba 1",
+					lastUpdate: "08/04/2023",
+					default: "false",
+					blocksData: [
+						{
+							id: 0,
+							x: 1,
+							y: 5,
+							type: "file",
+							title: "Ecuaciones",
+							children: [1],
+							identation: 1,
+						},
+						{
+							id: 1,
+							x: 2,
+							y: 5,
+							type: "questionnaire",
+							title: "Examen Tema 1",
+							conditions: [
+								{
+									type: "qualification",
+									operand: ">",
+									objective: 8,
+									unlocks: 2,
+								},
+							],
+							children: [2, 5],
+							identation: 2,
+						},
+						{
+							id: 2,
+							x: 3,
+							y: 3,
+							type: "folder",
+							title: "Carpeta Ecuaciones",
+							children: [10, 11],
+							identation: 2,
+						},
+						{
+							id: 5,
+							x: 3,
+							y: 7,
+							type: "questionnaire",
+							title: "Cuestionario de raices",
+							children: [6, 7],
+							identation: 1,
+						},
+						{
+							id: 6,
+							x: 4,
+							y: 6,
+							type: "assignment",
+							title: "Ejercicio de raices",
+							children: [-1],
+							identation: 1,
+						},
+						{
+							id: 7,
+							x: 4,
+							y: 9,
+							type: "inquery",
+							title: "Preguntas y respuestas",
+							children: [40, 41],
+							identation: 1,
+						},
+						{
+							id: 10,
+							x: 4,
+							y: 1,
+							type: "folder",
+							title: "Carpeta Ecuaciones 2",
+							children: [12, 13],
+							identation: 2,
+						},
+						{
+							id: 11,
+							x: 4,
+							y: 4,
+							type: "folder",
+							title: "Carpeta Ecuaciones 3",
+							identation: 2,
+						},
+						{
+							id: 12,
+							x: 5,
+							y: 0,
+							type: "folder",
+							title: "Insignia Ecuaciones 4",
+							identation: 2,
+						},
+						{
+							id: 13,
+							x: 5,
+							y: 2,
+							type: "folder",
+							title: "Carpeta Ecuaciones 5",
+							identation: 2,
+						},
+						{
+							id: 40,
+							x: 5,
+							y: 8,
+							type: "page",
+							title: "Web informativa 2",
+							identation: 2,
+						},
+						{
+							id: 41,
+							x: 5,
+							y: 10,
+							type: "page",
+							title: "Web informativa 3",
+							identation: 2,
+						},
+					],
+				},
+				{
+					id: 2,
+					name: "Prueba 2",
+					lastUpdate: "08/04/2023",
+					default: "false",
 					blocksData: [
 						{
 							id: 0,
@@ -122,7 +352,7 @@ function Header({ closeBtn }, ref) {
 							x: 3,
 							y: 0,
 							type: "folder",
-							title: "Insignia Ecuaciones",
+							title: "Carpeta Ecuaciones",
 							identation: 2,
 						},
 						{
@@ -163,35 +393,97 @@ function Header({ closeBtn }, ref) {
 						{
 							id: 7,
 							x: 6,
-							y: 4,
-							type: "fragment",
-							title: "Tema 2 Matemáticas",
+							y: 5,
+							type: "inquery",
+							title: "Preguntas de Matemáticas",
 							children: [8],
 							identation: 1,
 						},
 						{
 							id: 8,
 							x: 7,
-							y: 4,
+							y: 5,
 							type: "page",
 							title: "Web informativa",
-							children: [-1],
+							children: [40, 41],
+							identation: 2,
+						},
+						{
+							id: 40,
+							x: 8,
+							y: 4,
+							type: "page",
+							title: "Web informativa 2",
+							identation: 2,
+						},
+						{
+							id: 41,
+							x: 8,
+							y: 11,
+							type: "page",
+							title: "Web informativa 3",
+							children: [44, 45],
+							identation: 2,
+						},
+						{
+							id: 44,
+							x: 9,
+							y: 9,
+							type: "page",
+							title: "Web informativa 6",
+							children: [46, 47],
+							identation: 2,
+						},
+						{
+							id: 45,
+							x: 9,
+							y: 12,
+							type: "page",
+							title: "Web informativa 7",
+							identation: 2,
+						},
+						{
+							id: 46,
+							x: 10,
+							y: 7,
+							type: "page",
+							title: "Web informativa 8",
+							children: [48, 49],
+							identation: 2,
+						},
+						{
+							id: 47,
+							x: 10,
+							y: 10,
+							type: "page",
+							title: "Web informativa 9",
+							identation: 2,
+						},
+						{
+							id: 48,
+							x: 11,
+							y: 6,
+							type: "page",
+							title: "Web informativa 10",
+
+							identation: 2,
+						},
+						{
+							id: 49,
+							x: 11,
+							y: 8,
+							type: "page",
+							title: "Web informativa 11",
 							identation: 2,
 						},
 					],
 				},
-				{
-					id: 1,
-					name: "Prueba 1",
-					lastUpdate: "08/04/2023",
-					default: "false",
-				},
-				{ id: 2, name: "Prueba 2", lastUpdate: "08/04/2023", default: "false" },
+				{ id: 3, name: "Prueba 3", lastUpdate: "08/04/2023", default: "false" },
 			],
 		},
 		{
 			id: 2,
-			name: "Lengua 3ºESO",
+			name: "Matemáticas 4ºESO-B",
 			versions: [
 				{
 					id: 0,
@@ -203,7 +495,7 @@ function Header({ closeBtn }, ref) {
 		},
 		{
 			id: 3,
-			name: "Inglés 2ºESO",
+			name: "Matemáticas 4ºESO-C",
 			versions: [
 				{
 					id: 0,
@@ -272,6 +564,12 @@ function Header({ closeBtn }, ref) {
 			setSelectedVersion(selectedMap.versions[0]);
 			setCurrentBlocksData(selectedMap.versions[0].blocksData);
 		}
+		resetMapSesion();
+	}
+
+	function resetMapSesion() {
+		//Empty msgbox
+		setMSG([]);
 	}
 
 	/**
@@ -281,13 +579,13 @@ function Header({ closeBtn }, ref) {
 		resetEdit();
 		setSelectedMap(getMapById(-1));
 		setMap("");
+		setMSG([]);
 	}
 
 	/**
 	 * Handles the creation of a new itinerary.
 	 */
 	const handleNewItinerary = () => {
-		//TODO: GET CURRENT DATE
 		const newMap = [
 			...maps,
 			{
@@ -297,7 +595,7 @@ function Header({ closeBtn }, ref) {
 					{
 						id: 0,
 						name: "Última versión",
-						lastUpdate: "20/05/2023",
+						lastUpdate: new Date().toLocaleDateString(),
 						default: "true",
 					},
 				],
@@ -314,13 +612,12 @@ function Header({ closeBtn }, ref) {
 	 * Handles the creation of a new version.
 	 */
 	const handleNewVersion = () => {
-		//TODO: GET CURRENT DATE
 		const newMapVersions = [
 			...selectedMap.versions,
 			{
 				id: selectedMap.versions.length,
 				name: "Nueva Versión " + selectedMap.versions.length,
-				lastUpdate: "10/11/2024",
+				lastUpdate: new Date().toLocaleDateString(),
 				default: "true",
 				blocksData: [],
 			},
@@ -434,6 +731,7 @@ function Header({ closeBtn }, ref) {
 			if (selectedVersion.id != versionJson.id) {
 				resetEdit();
 				setCurrentBlocksData(selectedVersion.blocksData);
+				resetMapSesion();
 			}
 		}
 	}, [selectedVersion]);
@@ -527,7 +825,7 @@ function Header({ closeBtn }, ref) {
 			return (
 				<div
 					ref={ref}
-					style={{ position: "absolute", right: "0px" }}
+					style={{ position: "absolute", right: "0px", width: "20em" }}
 					className={className}
 					aria-labelledby={labeledBy}
 				>
@@ -671,7 +969,7 @@ function Header({ closeBtn }, ref) {
 								>
 									<div className="d-flex flex-row">
 										<Container className="d-flex flex-column">
-											<div>Ana López</div>
+											<div>María García</div>
 											<div>Moodle</div>
 										</Container>
 										<div className="mx-auto d-flex align-items-center">
@@ -696,7 +994,13 @@ function Header({ closeBtn }, ref) {
 					</Nav>
 				</Container>
 				{selectedMap.id > -1 && (
-					<div className={styles.mapContainer}>
+					<div
+						className={
+							styles.mapContainer +
+							" " +
+							(reducedAnimations && styles.noAnimation)
+						}
+					>
 						<div className={styles.mapText}>
 							<SplitButton
 								ref={selectVersionDOM}

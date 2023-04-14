@@ -27,7 +27,13 @@ import { ToastContainer } from "react-toastify";
 
 export default function App({ Component, pageProps }) {
 	const [settings, setSettings] = useState(
-		JSON.stringify({ compact: false, reducedAnimations: false })
+		JSON.stringify({
+			compact: false,
+			showDetails: false,
+			reducedAnimations: false,
+			autoExpandMSGBox: false,
+			autoHideMSGBox: true,
+		})
 	);
 
 	useEffect(() => {

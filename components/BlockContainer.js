@@ -1,6 +1,12 @@
 import styles from "@components/styles/BlockContainer.module.css";
 
-import { useContext, useLayoutEffect, useCallback, useRef } from "react";
+import {
+	useContext,
+	useLayoutEffect,
+	useCallback,
+	useRef,
+	useEffect,
+} from "react";
 import {
 	BlockInfoContext,
 	BlockPositionContext,
@@ -17,7 +23,6 @@ import {
 	CaretDownFill,
 	Link45deg,
 	PencilSquare,
-	Wechat,
 	Question,
 	ChatLeftText,
 	FileEarmark,
@@ -25,7 +30,8 @@ import {
 	Tag,
 	FileEarmarkText,
 	StarFill,
-	PlusSquareFill,
+	Diagram2,
+	Shuffle,
 } from "react-bootstrap-icons";
 
 export default function BlockContainer({ blockData, inline, unit, order }) {
@@ -39,7 +45,7 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 		useContext(VersionInfoContext);
 	const { settings, setSettings } = useContext(SettingsContext);
 	const parsedSettings = JSON.parse(settings);
-	const { compact, animations } = parsedSettings;
+	const { compact, showDetails, reducedAnimations } = parsedSettings;
 
 	const { expanded, setExpanded } = useContext(ExpandedContext);
 	const { blockPositions, setBlockPositions } =
@@ -85,9 +91,6 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 					break;
 				case "inquery":
 					humanType = "Consulta";
-					break;
-				case "generic":
-					humanType = "Genérico";
 					break;
 				case "tag":
 					humanType = "Etiqueta";
@@ -167,11 +170,9 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 				return <Link45deg size={32} />;
 			//Moodle
 			case "workshop":
-				return <Wechat size={32} />; //FIXME: This need to be changed by other icon
-			case "choice":
+				return <Shuffle size={32} />;
+			case "inquery":
 				return <Question size={32} />;
-			case "generic":
-				return <PatchQuestionFill size={32} />;
 			case "tag":
 				return <Tag size={32} />;
 			case "page":
@@ -197,7 +198,7 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 					<CaretDownFill style={{ transform: "rotate(90deg)" }} size={32} />
 				);
 			case "fragment":
-				return <PlusSquareFill size={32} />;
+				return <Diagram2 size={32} />;
 			default:
 				return <PatchQuestionFill size={32} />;
 		}
@@ -216,29 +217,27 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 			case "file":
 				return "btn-primary ";
 			case "folder":
-				return " ";
+				return "btn-warning ";
 			case "url":
 				return styles.btnURL + " ";
 			//Moodle
 			case "workshop":
-				return " ";
-			case "choice":
-				return " ";
-			case "generic":
-				return " ";
+				return styles.btnWorkshop + " ";
+			case "inquery":
+				return "btn-danger ";
 			case "tag":
-				return " ";
+				return styles.btnTag + " ";
 			case "page":
-				return " ";
+				return "btn-secondary ";
 			case "badge":
 				return "btn-success ";
 			//Sakai
 			case "exam":
 				return "btn-danger ";
 			case "contents":
-				return null;
+				return styles.btnContents + " ";
 			case "text":
-				return null;
+				return "btn-secondary ";
 			case "html":
 				return styles.btnHTML + " ";
 			//LTI
@@ -275,6 +274,18 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 		sendDimensions();
 	}, []);
 
+	useEffect(() => {
+		if (blockData) {
+			if (blockData.id == -2) {
+				blockDOM.current.scrollIntoView({
+					behavior: "smooth",
+					block: "center",
+					inline: "start",
+				});
+			}
+		}
+	}, [blockData]);
+
 	return (
 		<>
 			{blockData ? (
@@ -286,6 +297,15 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 					}
 				>
 					<span className={styles.blockInfo}>{blockData.title}</span>
+					{process.env.DEV_MODE && (
+						<>
+							<div>{`id:${blockData.id}`}</div>
+							<div>
+								{blockData.children && `children:${blockData.children}`}
+							</div>
+							<div>{`x:${blockData.x},y:${blockData.y}`}</div>
+						</>
+					)}
 					<div>
 						<Button
 							ref={blockDOM}
@@ -300,21 +320,39 @@ export default function BlockContainer({ blockData, inline, unit, order }) {
 									? styles.importantOutline
 									: blockSelected.id == blockData.id
 									? styles.borderAnim
-									: "")
+									: "") +
+								" " +
+								(reducedAnimations && styles.noAnimation)
 							}
 						>
 							{getTypeIcon()}
 						</Button>
 
 						{!inline && unit && (
-							<Badge bg="light" className={styles.badge} title="Unidad">
+							<Badge
+								bg="light"
+								className={
+									styles.badge +
+									" " +
+									(reducedAnimations && styles.noAnimation) +
+									" " +
+									(showDetails && styles.showBadges)
+								}
+								title="Unidad"
+							>
 								{unit}
 							</Badge>
 						)}
 						{!inline && order && (
 							<Badge
 								bg="warning"
-								className={styles.badgeTwo}
+								className={
+									styles.badgeTwo +
+									" " +
+									(reducedAnimations && styles.noAnimation) +
+									" " +
+									(showDetails && styles.showBadges)
+								}
 								title="Posición en Moodle"
 							>
 								{order}
